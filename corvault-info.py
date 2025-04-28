@@ -26,7 +26,7 @@ if __name__ == "__main__":
     else:
         FULL_OUTPUT = False
 
-    c = corvault.Corvault("https://" + args.host)
+    c = corvault.Corvault(args.host)
     c.load_config()
     c.login()
 

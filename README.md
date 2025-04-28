@@ -4,6 +4,7 @@ Required python modules:
 
 * requests
 * pyyaml
+* tenacity
 
 ## corvault-info.py
 
