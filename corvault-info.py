@@ -1,8 +1,8 @@
 import corvault
 import argparse
-import pprint
 
 FULL_OUTPUT = True
+
 
 def full_print(*args, **kwargs):
     if FULL_OUTPUT:
@@ -10,6 +10,7 @@ def full_print(*args, **kwargs):
     else:
         # do not print anything
         pass
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Corvault Info')
@@ -37,12 +38,12 @@ if __name__ == "__main__":
     full_print('midplane-serial-number:', system['midplane-serial-number'])
     full_print('controller-a-serial-number:', system['redundancy'][0]['controller-a-serial-number'])
     full_print('controller-b-serial-number:', system['redundancy'][0]['controller-b-serial-number'])
- 
+
     print()
     print('Alerts:')
     for alert in c.get_page('/api/show/alerts')['alerts']:
         if alert['resolved'] == 'Yes':
-            #skip resolved alerts
+            # skip resolved alerts
             continue
         if alert['severity'] == 'INFORMATIONAL' and args.show_informational is False:
             continue
@@ -53,16 +54,6 @@ if __name__ == "__main__":
         print('Health:', alert['health'])
         print('Reason', alert['reason'])
         print()
-
-    #print('health:', system['health'])
-    #print('unhealthy-component:', len(system['unhealthy-component']))
-    #if len(system['unhealthy-component']) > 0:
-    #    print('unhealthy-components:')
-    #    for component in system['unhealthy-component']:
-    #        print('basetype:', component['basetype'])
-    #        print('component-id:', component['component-id'])
-    #        print('health-reason:', component['health-reason'])
-    #        print()
 
     print()
     print('fde-security-status:', system['fde-security-status'])
@@ -122,10 +113,13 @@ if __name__ == "__main__":
     print('Disks:')
     for disk in sorted(c.get_page('/api/show/disks')['drives'], key=lambda x: x['slot']):
         if FULL_OUTPUT:
-            print(disk['slot'], disk['health'], disk['health-reason'], disk['model'], disk['serial-number'], disk['size-numeric'], disk['revision'], disk['size'], disk['temperature-numeric'], disk['total-data-transferred-numeric'])
+            print(disk['slot'], disk['health'], disk['health-reason'],
+                  disk['model'], disk['serial-number'], disk['size-numeric'],
+                  disk['revision'], disk['size'], disk['temperature-numeric'], disk['total-data-transferred-numeric'])
         else:
-            print(disk['slot'], disk['health'], disk['health-reason'], disk['model'], disk['size-numeric'], disk['revision'], disk['size'])
-        
+            print(disk['slot'], disk['health'], disk['health-reason'],
+                  disk['model'], disk['size-numeric'], disk['revision'], disk['size'])
+
     print()
     print('Sensors:')
     sensors = c.get_page('/api/show/sensor-status')['sensors']
@@ -134,7 +128,7 @@ if __name__ == "__main__":
             print(sensor['sensor-name'], sensor['status'], sensor['value'])
         else:
             print(sensor['sensor-name'], sensor['status'])
-    
+
     print()
     print('Fans:')
     for fan in c.get_page('/api/show/fans')['fan']:
