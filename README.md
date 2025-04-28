@@ -108,14 +108,14 @@ B1 500c0fff64b40500 Disconnected Auto OK
 B2 500c0fff64b40600 Up 12Gb OK
 B3 500c0fff64b40700 Disconnected Auto OK
 
-disks:
+Disks:
 0 OK The component is healthy. ST24000NM005H REDACTED 46875541504 ET05 24.0TB 25 0
 [...]
 100 Fault Excessive media errors. ST24000NM005H REDACTED 46875541504 ET05 24.0TB 0 0
 [...]
 105 OK The component is healthy. ST24000NM005H REDACTED 46875541504 ET05 24.0TB 27 0
 
-sensors:
+Sensors:
 CPU Temperature-Ctlr B OK 49 C
 ASIC Temperature-Ctlr B OK 39 C
 Capacitor Pack Temperature-Ctlr B OK 29 C
@@ -179,7 +179,7 @@ Current Core 2 Input Rail Loc: right-PSU OK 2.38
 Current Core 0 12V Rail Loc: left-PSU OK 42.50
 Current Core 0 Input Rail Loc: left-PSU OK 2.22
 
-fans:
+Fans:
 Enclosure 0, Fan Module 0 Fan 0 OK 7650
 Enclosure 0, Fan Module 0 Fan 1 OK 7620
 Enclosure 0, Fan Module 1 Fan 0 OK 7650

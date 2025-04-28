@@ -119,15 +119,15 @@ if __name__ == "__main__":
             print(port['port'], port['status'], port['actual-speed'], port['health'], port['health-reason'])
 
     print()
-    print('disks:')
-    for disk in c.get_page('/api/show/disks')['drives']:
+    print('Disks:')
+    for disk in sorted(c.get_page('/api/show/disks')['drives'], key=lambda x: x['slot']):
         if FULL_OUTPUT:
             print(disk['slot'], disk['health'], disk['health-reason'], disk['model'], disk['serial-number'], disk['size-numeric'], disk['revision'], disk['size'], disk['temperature-numeric'], disk['total-data-transferred-numeric'])
         else:
             print(disk['slot'], disk['health'], disk['health-reason'], disk['model'], disk['size-numeric'], disk['revision'], disk['size'])
         
     print()
-    print('sensors:')
+    print('Sensors:')
     sensors = c.get_page('/api/show/sensor-status')['sensors']
     for sensor in sensors:
         if FULL_OUTPUT:
@@ -136,7 +136,7 @@ if __name__ == "__main__":
             print(sensor['sensor-name'], sensor['status'])
     
     print()
-    print('fans:')
+    print('Fans:')
     for fan in c.get_page('/api/show/fans')['fan']:
         if FULL_OUTPUT:
             print(fan['location'], fan['name'], fan['health'], fan['speed'])
