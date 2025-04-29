@@ -6,18 +6,31 @@ Required python modules:
 * pyyaml
 * tenacity
 
+## check_corvault.py
+
+Script intended to be used with icinga or nagios to check the status of a corvault node.
+
+``` bash
+$ python check_corvault.py corvault1
+[WARNING] Disk Group corvault1-dg02 - The spare capacity available to the ADAPT disk group is not sufficient to meet the required configured spare capacity that is needed to provide full fault tolerance. Spare capacity availability can be influenced by operations that require available space in the system, such as reconstructing data from a failed disk.
+[WARNING] Enclosure 0, Slot 33 - The disk in this slot or the midplane is degraded.
+
+$ python check_corvault.py corvault2
+[CRITICAL] Enclosure 0, Power Supply 1 - The power supply is not receiving any input power.
+```
+
 ## corvault-info.py
 
 Show the difference between all corvault nodes. This is removing specific information like temperature and serial number so it can be used with the ``--diff`` option. This is using ClusterShell to run the command on all nodes in parallel and compare the output.
 
 ``` bash
-clush --diff -w corvault[1-2] --worker=exec python corvault-info.py %host
+$ clush --diff -w corvault[1-2] --worker=exec python corvault-info.py %host
 ```
 
 Show the detailed information about a corvault node.
 
 ``` bash
-python corvault-info.py corvault1 --full
+$ python corvault-info.py corvault1 --full
 local-controller: A
 system-name: REDACTED
 serial-number: REDACTED
