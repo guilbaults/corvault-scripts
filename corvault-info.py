@@ -102,6 +102,24 @@ if __name__ == "__main__":
         print('write-policy:', volume['write-policy'])
         print()
 
+    print('Disk groups:')
+    for group in c.get_page('/api/show/disk-groups')['disk-groups']:
+        if FULL_OUTPUT:
+            print(group['name'])
+            print('status:', group['status'])
+            print('write-back-enabled:', group['write-back-enabled'])
+            print('current-job:', group['current-job'])
+            print('current-job-completion:', group['current-job-completion'])
+            print('critical-capacity:', group['critical-capacity'])
+            print('degraded-capacity:', group['degraded-capacity'])
+            print('health:', group['health'])
+            print('health-reason:', group['health-reason'])
+            print()
+        else:
+            print(group['status'], group['write-back-enabled'],
+                  group['health'], group['health-reason'])
+
+    print()
     print('Ports:')
     for port in c.get_page('/api/show/ports')['port']:
         if FULL_OUTPUT:

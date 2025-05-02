@@ -112,6 +112,27 @@ owner: B
 progress: 0%
 write-policy: write-back
 
+Disk groups:
+REDACTED-dg01
+status: FTDN
+write-back-enabled: Enabled
+current-job: RCON
+current-job-completion: 9%
+critical-capacity: 0B
+degraded-capacity: 369.1TB
+health: Degraded
+health-reason: One disk in the RAID disk group failed; however, the disk group remains fault tolerant. Reconstruction has started.
+
+REDACTED-dg02
+status: FTDN
+write-back-enabled: Enabled
+current-job: RCON
+current-job-completion: 32%
+critical-capacity: 0B
+degraded-capacity: 607.9TB
+health: Degraded
+health-reason: One disk in the RAID disk group failed; however, the disk group remains fault tolerant. Reconstruction has started.
+
 Ports:
 A0 500c0fff64b40000 Up 12Gb OK
 A1 500c0fff64b40100 Disconnected Auto OK
