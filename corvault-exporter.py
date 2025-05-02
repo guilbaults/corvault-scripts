@@ -6,6 +6,7 @@ import corvault
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
+        self.send_header('Content-type', 'text/plain; version=0.0.4')
         self.end_headers()
         hostname = self.path.split('/')[1]
 
@@ -18,8 +19,14 @@ class Handler(BaseHTTPRequestHandler):
         for sensor in sensors:
             if sensor['sensor-name'] == 'Overall Unit Status':
                 value = sensor['status-numeric']
+            elif sensor['value'] == '':  # Can happen when a PSU is not powered
+                value = -1
             else:
-                value = float(sensor['value'].split(' ')[0].rstrip('%'))
+                try:
+                    value = float(sensor['value'].split(' ')[0].rstrip('%'))
+                except ValueError:
+                    print(f"Could not convert {sensor['value']} to float on {sensor['sensor-name']}")
+                    value = -1
             name = sensor['sensor-name'].replace(' ', '_').replace('-', '_').replace(':', '')
             self.wfile.write(f'corvault_sensor{{name="{name}"}} {value}\n'.encode())
 
@@ -28,33 +35,33 @@ class Handler(BaseHTTPRequestHandler):
         for fan in c.get_page('/api/show/fans')['fan']:
             module = fan['location'][-1]
             fan_number = fan['name'][-1]
-            self.wfile.write(f'corvault_fan{{module="{module}", fan="{fan_number}"}} {fan["speed"]}\n'.encode())
+            self.wfile.write(f'corvault_fan{{module="{module}",fan="{fan_number}"}} {fan["speed"]}\n'.encode())
 
         disks = sorted(c.get_page('/api/show/disks')['drives'], key=lambda x: x['slot'])
         self.wfile.write(b'# HELP corvault_disk_health disk health\n')
         self.wfile.write(b'# TYPE corvault_disk_health gauge\n')
         for disk in disks:
-            self.wfile.write(f'corvault_disk_health{{slot="{disk["slot"]}", model="{disk["model"]}", \
-serial_number="{disk["serial-number"]}", revision="{disk["revision"]}"}} {disk["health-numeric"]}\n'.encode())
+            self.wfile.write(f'corvault_disk_health{{slot="{disk["slot"]}",model="{disk["model"]}",\
+serial_number="{disk["serial-number"]}",revision="{disk["revision"]}"}} {disk["health-numeric"]}\n'.encode())
 
         self.wfile.write(b'# HELP corvault_disk_temperature disk temperature\n')
         self.wfile.write(b'# TYPE corvault_disk_temperature gauge\n')
         for disk in disks:
-            self.wfile.write(f'corvault_disk_temperature{{slot="{disk["slot"]}", model="{disk["model"]}", \
-serial_number="{disk["serial-number"]}", revision="{disk["revision"]}"}} {disk["temperature-numeric"]}\n'.encode())
+            self.wfile.write(f'corvault_disk_temperature{{slot="{disk["slot"]}",model="{disk["model"]}",\
+serial_number="{disk["serial-number"]}",revision="{disk["revision"]}"}} {disk["temperature-numeric"]}\n'.encode())
 
-        self.wfile.write(b'# HELP corvault_disk_transferred disk data transferred\n')
-        self.wfile.write(b'# TYPE corvault_disk_transferred counter\n')
+        self.wfile.write(b'# HELP corvault_disk_transferred_total disk data transferred\n')
+        self.wfile.write(b'# TYPE corvault_disk_transferred_total counter\n')
         for disk in disks:
-            self.wfile.write(f'corvault_disk_transferred{{slot="{disk["slot"]}", model="{disk["model"]}", \
-serial_number="{disk["serial-number"]}", revision="{disk["revision"]}"}} {disk["total-data-transferred-numeric"]}\n'.encode())
+            self.wfile.write(f'corvault_disk_transferred_total{{slot="{disk["slot"]}",model="{disk["model"]}",\
+serial_number="{disk["serial-number"]}",revision="{disk["revision"]}"}} {disk["total-data-transferred-numeric"]}\n'.encode())
 
         # might be useful once disks are remanufactured to remove a platter
         # self.wfile.write(b'# HELP corvault_disk_size Corvault disk size\n')
         # self.wfile.write(b'# TYPE corvault_disk_size gauge\n')
         # for disk in disks:
-        #     self.wfile.write(f'corvault_disk_size{{slot="{disk["slot"]}", model="{disk["model"]}", \
-        # serial_number="{disk["serial-number"]}", revision="{disk["revision"]}"}} {disk["size-numeric"]}\n'.encode())
+        #     self.wfile.write(f'corvault_disk_size{{slot="{disk["slot"]}",model="{disk["model"]}",\
+        # serial_number="{disk["serial-number"]}",revision="{disk["revision"]}"}} {disk["size-numeric"]}\n'.encode())
 
         disk_groups = c.get_page('/api/show/disk-groups')['disk-groups']
         self.wfile.write(b'# HELP corvault_disk_group_status \n')
