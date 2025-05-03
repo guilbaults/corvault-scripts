@@ -89,6 +89,10 @@ serial_number="{disk["serial-number"]}",revision="{disk["revision"]}"}} {disk["t
         self.wfile.write(b'# TYPE corvault_disk_group_degraded_capacity gauge\n')
         for group in disk_groups:
             self.wfile.write(f'corvault_disk_group_degraded_capacity{{name="{group["name"]}"}} {group["degraded-capacity-numeric"]}\n'.encode())
+        self.wfile.write(b'# HELP corvault_disk_group_actual_spare_capacity \n')
+        self.wfile.write(b'# TYPE corvault_disk_group_actual_spare_capacity gauge\n')
+        for group in disk_groups:
+            self.wfile.write(f'corvault_disk_group_actual_spare_capacity{{name="{group["name"]}"}} {group["actual-spare-capacity-numeric"]}\n'.encode())
         self.wfile.write(b'# HELP corvault_disk_group_health \n')
         self.wfile.write(b'# TYPE corvault_disk_group_health gauge\n')
         for group in disk_groups:
