@@ -96,7 +96,8 @@ if __name__ == "__main__":
         print(f'Volume {idx}:')
         full_print('virtual-disk-name:', volume['virtual-disk-name'])
         print('health:', volume['health'])
-        print('health-reason', volume['health-reason'])
+        if volume['health'] != 'OK':
+            print('health-reason:', volume['health-reason'])
         print('owner:', volume['owner'])
         full_print('progress:', volume['progress'])
         print('write-policy:', volume['write-policy'])
@@ -113,11 +114,16 @@ if __name__ == "__main__":
             print('critical-capacity:', group['critical-capacity'])
             print('degraded-capacity:', group['degraded-capacity'])
             print('health:', group['health'])
-            print('health-reason:', group['health-reason'])
+            if group['health'] != 'OK':
+                print('health-reason:', group['health-reason'])
             print()
         else:
-            print(group['status'], group['write-back-enabled'],
-                  group['health'], group['health-reason'])
+            if group['health'] != 'OK':
+                print(group['status'], group['write-back-enabled'],
+                      group['health'], group['health-reason'])
+            else:
+                print(group['status'], group['write-back-enabled'],
+                      group['health'])
 
     print()
     print('Ports:')
