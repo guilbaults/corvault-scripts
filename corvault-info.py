@@ -92,7 +92,8 @@ if __name__ == "__main__":
 
     print()
     print('Volumes:')
-    for idx, volume in enumerate(c.get_page('/api/show/volumes')['volumes']):
+    for idx, volume in enumerate(sorted(c.get_page('/api/show/volumes')['volumes'],
+                                 key=lambda x: x['virtual-disk-name'])):
         print(f'Volume {idx}:')
         full_print('virtual-disk-name:', volume['virtual-disk-name'])
         print('health:', volume['health'])
