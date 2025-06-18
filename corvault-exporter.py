@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 import corvault
