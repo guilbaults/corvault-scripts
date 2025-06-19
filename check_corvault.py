@@ -6,7 +6,7 @@ import sys
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='icinga checks for Corvault')
-    parser.add_argument('host', type=str, help='Corvault hostname')
+    parser.add_argument('--host', type=str, help='Corvault hostname', required=True)
     args = parser.parse_args()
 
     c = corvault.Corvault(args.host)
