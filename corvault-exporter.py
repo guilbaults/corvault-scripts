@@ -105,7 +105,7 @@ class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
 
 
 def run():
-    server = ThreadingSimpleServer(('0.0.0.0', 8080), Handler)
+    server = ThreadingSimpleServer(('0.0.0.0', 8888), Handler)
     server.serve_forever()
 
 
