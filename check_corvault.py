@@ -41,9 +41,18 @@ if __name__ == "__main__":
             if disk['health-reason'] == 'The disk is degraded due to a pending or active preemptive reconstruct operation.':
                 print(f'[WARNING] - Disk in slot {disk["slot"]} has health status {disk["health"]} because of preemptive reconstruct operation')
                 warnings.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} because of preemptive reconstruct operation')
+            elif disk['health-reason'] == 'The disk may contain invalid metadata.':
+                print(f'[CRITICAL] - Disk in slot {disk["slot"]} contain invalid metadata.')
+                criticals.append(f'Disk in slot {disk["slot"]} contain invalid metadata.')
+            elif disk['health-reason'] == 'A disk that was previously a member of a disk group has been detected.':
+                print(f'[CRITICAL] - Disk in slot {disk["slot"]} was previously a member of a disk group has been detected.')
+                criticals.append(f'Disk in slot {disk["slot"]} was previously a member of a disk group has been detected.')
+            elif disk['health-reason'] == 'The system determined that the indicated disk is degraded because it experienced a number of disk errors in excess of a configured threshold.':
+                print(f'[WARNING] - Disk in slot {disk["slot"]} has health status {disk["health"]} because it experienced a number of disk errors in excess of a configured threshold.')
+                warnings.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} because it experienced a number of disk errors in excess of a configured threshold.')
             else:
-                print(f'[CRITICAL] - Disk in slot {disk["slot"]} has health status {disk["health"]}')
-                criticals.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]}')
+                print(f'[CRITICAL] - Disk in slot {disk["slot"]} has health status {disk["health"]} {disk["health-reason"]}')
+                criticals.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} {disk["health-reason"]}')
 
         if int(disk['size-numeric']) < largest_disk_size:
             print(f'[INFO] - Disk in slot {disk["slot"]} has smaller size than the largest disk')
