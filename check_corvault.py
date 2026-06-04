@@ -38,8 +38,12 @@ if __name__ == "__main__":
     for disk in disks:
         # check for failed disks or empty slots
         if disk['health'] != 'OK':
-            print(f'[CRITICAL] - Disk in slot {disk["slot"]} has health status {disk["health"]}')
-            criticals.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]}')
+            if(disk['health-reason']) == 'The disk is degraded due to a pending or active preemptive reconstruct operation.':
+                print(f'[WARNING] - Disk in slot {disk["slot"]} has health status {disk["health"]} because of preemptive reconstruct operation')
+                warnings.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} because of preemptive reconstruct operation')
+            else:
+                print(f'[CRITICAL] - Disk in slot {disk["slot"]} has health status {disk["health"]}')
+                criticals.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]}')
 
         if int(disk['size-numeric']) < largest_disk_size:
             print(f'[INFO] - Disk in slot {disk["slot"]} has smaller size than the largest disk')
