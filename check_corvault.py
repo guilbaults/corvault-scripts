@@ -50,6 +50,9 @@ if __name__ == "__main__":
             elif disk['health-reason'] == 'The system determined that the indicated disk is degraded because it experienced a number of disk errors in excess of a configured threshold.':
                 print(f'[WARNING] - Disk in slot {disk["slot"]} has health status {disk["health"]} because it experienced a number of disk errors in excess of a configured threshold.')
                 warnings.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} because it experienced a number of disk errors in excess of a configured threshold.')
+            elif disk['health-reason'] == 'A user forced the disk out of the disk group.':
+                print(f'[WARNING] - Disk in slot {disk["slot"]} has health status {disk["health"]} {disk["health-reason"]}')
+                warnings.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} {disk["health-reason"]}')
             else:
                 print(f'[CRITICAL] - Disk in slot {disk["slot"]} has health status {disk["health"]} {disk["health-reason"]}')
                 criticals.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} {disk["health-reason"]}')
