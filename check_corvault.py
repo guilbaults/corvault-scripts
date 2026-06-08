@@ -69,6 +69,8 @@ if __name__ == "__main__":
             oks.append(f'Disk group {group["name"]} is scrubbing')
         elif group['job-running'] == 'PRERCON':
             warnings.append(f'Disk group {group["name"]} is performing preemptive reconstruct')
+        elif group['job-running'] == '':
+            oks.append(f'Disk group {group["name"]} is not performing any job')
         else:
             criticals.append(f'Disk group {group["name"]} is performing unknown job {group["job-running"]}')
         if (group['actual-spare-capacity-numeric'] / group['target-spare-capacity-numeric']) < 0.5:
