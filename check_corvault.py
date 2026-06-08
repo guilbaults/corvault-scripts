@@ -14,7 +14,7 @@ if __name__ == "__main__":
     c.login()
     criticals = []
     warnings = []
-    infos = []
+    oks = []
 
     for alert in c.get_page('/api/show/alerts')['alerts']:
         alert_text = f'{alert["description"]} - {alert["reason"]}'
@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 criticals.append(f'Disk in slot {disk["slot"]} has health status {disk["health"]} {disk["health-reason"]}')
 
         if int(disk['size-numeric']) < largest_disk_size:
-            infos.append(f'Disk in slot {disk["slot"]} has smaller size than the largest disk')
+            oks.append(f'Disk in slot {disk["slot"]} has smaller size than the largest disk')
 
         found_slots.add(disk['slot'])
 
@@ -64,9 +64,9 @@ if __name__ == "__main__":
         if group['job-running'] == 'RCON':
             criticals.append(f'Disk group {group["name"]} is rebuilding')
         elif group['job-running'] == 'RBAL':
-            infos.append(f'Disk group {group["name"]} is rebalancing')
+            oks.append(f'Disk group {group["name"]} is rebalancing')
         elif group['job-running'] == 'VRSC':
-            infos.append(f'Disk group {group["name"]} is scrubbing')
+            oks.append(f'Disk group {group["name"]} is scrubbing')
         elif group['job-running'] == 'PRERCON':
             warnings.append(f'Disk group {group["name"]} is performing preemptive reconstruct')
         else:
@@ -78,8 +78,8 @@ if __name__ == "__main__":
         print(f'[CRITICAL] - {crit}')
     for warn in warnings:
         print(f'[WARNING] - {warn}')
-    for info in infos:
-        print(f'[INFO] - {info}')
+    for ok in oks:
+        print(f'[OK] - {ok}')
 
     if len(criticals) > 0:
         sys.exit(2)
