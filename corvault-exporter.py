@@ -76,8 +76,11 @@ serial_number="{disk["serial-number"]}",revision="{disk["revision"]}"}} {disk["t
         self.wfile.write(b'# HELP corvault_disk_group_current_job_completion \n')
         self.wfile.write(b'# TYPE corvault_disk_group_current_job_completion gauge\n')
         for group in disk_groups:
-            progress = group["current-job-completion"].rstrip('%')
-            self.wfile.write(f'corvault_disk_group_current_job_completion{{name="{group["name"]}",current_job="{group["current-job"]}"}} {progress}\n'.encode())
+            if group['job-running']:
+                progress = group["current-job-completion"].rstrip('%')
+                self.wfile.write(f'corvault_disk_group_current_job_completion{{name="{group["name"]}",current_job="{group["current-job"]}"}} {progress}\n'.encode())
+            else:
+                self.wfile.write(f'corvault_disk_group_current_job_completion{{name="{group["name"]}",current_job="None"}} 0\n'.encode())
         self.wfile.write(b'# HELP corvault_disk_group_critical_capacity \n')
         self.wfile.write(b'# TYPE corvault_disk_group_critical_capacity gauge\n')
         for group in disk_groups:
